@@ -4,7 +4,7 @@ def test_tweepy_import():
     print(takf.tweepy)
 
 def test_import_config_keys():
-    assert takf.keys['consumer_key'] == 'npDclx6ns0cIeQvs2bea7VigG'
+    assert 'consumer_key' in takf.keys()
 
 def test_auth():
     twts = takf.api.search(q="Woody Guthrie")
