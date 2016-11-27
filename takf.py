@@ -31,13 +31,15 @@ class SongRetriever(object):
         matches = []
         for song in self.songs:
             keywords = set(map(lambda s: s.lower(), song.split('.txt')[0].split()))
+
             found = list(keywords.intersection(text))
             if len(found) > 0:
                 matches.append((song, len(found)))
 
         if matches:
             found_match = sorted(matches, key=lambda x: x[1], reverse=True)[0][0]
-            song_title, song_lyrics = found_match.strip('.txt'), self.get_lyrics(found_match)
+
+            song_title, song_lyrics = found_match.split('.txt')[0], self.get_lyrics(found_match)
             return song_title, song_lyrics
 
         return False        
@@ -82,11 +84,13 @@ class MyStreamListener(tweepy.StreamListener):
                 api.update_status(message, in_reply_to_status_id=status.id)
                 break
 
-
+"""
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
 myStream.filter(track=['@singtomewoody'])
 """
-for status in tweepy.Cursor(api.user_timeline).items():
-    api.destroy_status(status.id)
-"""
+#for status in tweepy.Cursor(api.user_timeline).items():
+#    api.destroy_status(status.id)
+
+sr = SongRetriever()
+sr.get_song('this land is your land')

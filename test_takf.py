@@ -12,5 +12,5 @@ def test_auth():
 
 def test_partial_matching():
     bot = takf.MyStreamListener()
-    song_title, song_lyrics = bot.song_retriever.get_song('stetson')
-    assert 'stetson' in song_title
+    song_title, song_lyrics = bot.song_retriever.get_song('this land is your land')
+    assert 'this land' in song_title
