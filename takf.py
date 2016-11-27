@@ -72,25 +72,21 @@ class MyStreamListener(tweepy.StreamListener):
 
     def send_reply(self, song_to_sing, line, line_number, screen_name, status_id):
 
+        if line_number.split('/')[0] == '1':
+            starting_message = 'Singing {} to {}'.format(song_to_sing.title(), screen_name)            
+            api.update_status(starting_message, in_reply_to_status_id = status_id) 
+
         message = '{0} {1} ({2} {3})'.format(screen_name,
                                              line, 
                                              song_to_sing.title(), 
-                                             line_number)
+                                             line_number) 
 
-        if line_number.split('/')[0] == '1':
-            api.update_status(message, in_reply_to_status_id = status_id) 
-        else:
-            for status in tweepy.Cursor(api.user_timeline).items():
-                api.update_status(message, in_reply_to_status_id=status.id)
-                break
+        for status in tweepy.Cursor(api.user_timeline).items():
+            api.update_status(message, in_reply_to_status_id=status.id)
+            break
 
-"""
-myStreamListener = MyStreamListener()
-myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
-myStream.filter(track=['@singtomewoody'])
-"""
-#for status in tweepy.Cursor(api.user_timeline).items():
-#    api.destroy_status(status.id)
-
-sr = SongRetriever()
-sr.get_song('this land is your land')
+if __name__ == '__main__':
+    
+    myStreamListener = MyStreamListener()
+    myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
+    myStream.filter(track=['@singtomewoody'])
